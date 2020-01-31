@@ -22,7 +22,6 @@ public class Deathstar : MonoBehaviour
         while (charge<=100)
         { 
             yield return new WaitForSeconds(1f);
-            FindObjectOfType<UIManager>().chargeImage.fillAmount = charge/100;
             charge += 0.5f;
         }
     }
