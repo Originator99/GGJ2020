@@ -15,6 +15,5 @@ MonoBehaviour:
   _id: 0
   gun_name: DemoGun
   damage: 10
-  bullet_prefab: {fileID: 1802412568772907814, guid: 201b8a5ac9deab5488c8a078a47998ed,
-    type: 3}
+  bullet_prefab: {fileID: 132250, guid: e10d3a91efabf8249b7f21fca0c66175, type: 3}
   firerate: 0.1

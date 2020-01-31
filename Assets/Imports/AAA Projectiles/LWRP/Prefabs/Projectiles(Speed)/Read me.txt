@@ -1,3 +1,0 @@
-Projectiles from this folder are moved with help of the particle speed!
-
-If materials are not displayed (effects on the stage are transparent) - look at the documentation (1.2)!

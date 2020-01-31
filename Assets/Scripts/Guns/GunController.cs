@@ -1,30 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class GunController : MonoBehaviour, IGun {
-    public Transform shoot_point;
-    public GunSO _gun;
 
-    private float fireCooldown;
+    [SerializeField]
+    private GameObject flashOnShoot;
 
-    private void Update() {
-        if (fireCooldown > 0) {
-            fireCooldown -= Time.deltaTime;
-        }
-    }
+    private GunSO _gun;
+    private new Transform camera;
+    private bool isOnCoolDown;
+
+	void Start () {
+        camera = Camera.main.transform;
+	}
 
     public void Shoot() {
-        if (_gun == null || shoot_point == null) {
-            Debug.LogError("Shoot point or _gun is null, cannot shoot for object name : " + transform.name);
-            return;
-        }
-        if (fireCooldown <= 0) {
-            fireCooldown = _gun.firerate;
-            GameObject bullet = Instantiate(_gun.bullet_prefab, shoot_point.position, Quaternion.identity);
-            //bullet.transform.SetParent(transform.parent.parent);
+        if (isOnCoolDown) return;
+        //var effect = Instantiate(shootEffect, transform.position, Quaternion.identity) as GameObject;
+        //effect.transform.parent = transform;
+        //Destroy(effect, .1f);
 
+        var bullet = Instantiate(_gun.bullet_prefab, transform.position, transform.rotation) as GameObject;
+        bullet.GetComponent<Bullet>().damage = _gun.damage;
+        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 80, ForceMode.Impulse);
+
+        RaycastHit hit;
+        if(Physics.Raycast(camera.position, camera.forward, out hit)) {
+            bullet.transform.LookAt(hit.point);
         }
+
+        isOnCoolDown = true;
+        StartCoroutine(Cooldown());
+    }
+	
+	private IEnumerator Cooldown() {
+        yield return new WaitForSeconds(_gun.firerate);
+        isOnCoolDown = false;
     }
 
     public void setGun(GunSO gunSO) {
