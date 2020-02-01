@@ -423,6 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99725a762f7bc844495b2bf70bd96af0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  current_enemy_count: 0
 --- !u!4 &432360964
 Transform:
   m_ObjectHideFlags: 0
@@ -446,7 +447,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 527555434}
-  - component: {fileID: 527555435}
   m_Layer: 0
   m_Name: EnemySpawn
   m_TagString: Untagged
@@ -468,21 +468,6 @@ Transform:
   m_Father: {fileID: 8786912170978388767}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &527555435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527555433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db5c6a562a128a84380566e6fd996652, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy_prefabs:
-  - {fileID: 4371316961840234293, guid: 70bf774cfb9d28746b7e5f9023832970, type: 3}
-  spawn_point: {fileID: 527555434}
 --- !u!1 &636859710
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,10 +831,19 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 547352231, guid: 97e482aab22a3f84ea09e45405c995fc, type: 3}
+      propertyPath: planets
+      value: 
+      objectReference: {fileID: 1233952615}
     - target: {fileID: 3509160698650138515, guid: 97e482aab22a3f84ea09e45405c995fc,
         type: 3}
       propertyPath: m_Name
       value: DeathStar
+      objectReference: {fileID: 0}
+    - target: {fileID: 3509160698650138515, guid: 97e482aab22a3f84ea09e45405c995fc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3509160698650138527, guid: 97e482aab22a3f84ea09e45405c995fc,
         type: 3}
@@ -1503,13 +1497,30 @@ GameObject:
   m_Component:
   - component: {fileID: 8786912170978388767}
   - component: {fileID: 3108337255800176772}
+  - component: {fileID: 1063873488213235066}
   m_Layer: 0
-  m_Name: EnemyPlanet
+  m_Name: EnemyPlanetSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1063873488213235066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063873488213235065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db5c6a562a128a84380566e6fd996652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy_prefabs:
+  - {fileID: 4371316961840234293, guid: 70bf774cfb9d28746b7e5f9023832970, type: 3}
+  spawn_points:
+  - {fileID: 527555434}
 --- !u!114 &3108337255800176772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1522,7 +1533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e64d8de11c55654b8516d7fd44e9e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy_spawn: {fileID: 527555435}
+  enemy_spawn: {fileID: 1063873488213235066}
   planet_info: {fileID: 11400000, guid: 7dcd20c112294b14c8c6c50629e7f707, type: 2}
 --- !u!1 &6117260624213179394
 GameObject:

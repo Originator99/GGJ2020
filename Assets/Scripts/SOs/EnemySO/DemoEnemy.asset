@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _name: DemoEnemy
-  health: 10
+  health: 50
   gun_id: -1
   die_effect: {fileID: 0}
   drop:

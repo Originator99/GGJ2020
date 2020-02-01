@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Deathstar : MonoBehaviour
 {
+    public Transform planets;
 
     public static Deathstar instance;
     private void Awake() {
@@ -41,23 +42,29 @@ public class Deathstar : MonoBehaviour
         if (repair_amount < 100) {
             repairDeathStar(rc_info.repair_per_second);
         } else if (repair_amount >= 100) {
-            Debug.Log("Repair Done");
+            //Debug.Log("Repair Done");
             if (charge_amount < 100) {
                 rechargeDeathStar(rc_info.recharge_per_second);
             } else {
-                Debug.Log("Charge done");
+                //Debug.Log("Charge done");
                 if (!can_use_death_star) {
                     can_use_death_star = true;
                 }
             }
         }
-        Debug.Log("Repair Amount : " + repair_amount + " Charge Amount : " + charge_amount);
+       // Debug.Log("Repair Amount : " + repair_amount + " Charge Amount : " + charge_amount);
     }
 
     public void UseDeathStar() {
         Debug.Log("Death star out !");
         can_use_death_star = false;
+        StartCoroutine(DeathStarAnimation());
+    }
+
+    private IEnumerator DeathStarAnimation() {
+        Transform target = findClosetPlanet();
         resetCharge();
+        yield break;
     }
 
 
@@ -65,7 +72,7 @@ public class Deathstar : MonoBehaviour
         float amount = (float)damage / 100 * (100 - repair_amount);
         repair_amount -= amount;
         if (repair_amount <= 0) {
-            Debug.Log("DEATH STAR DEAD!!");
+            //Debug.Log("DEATH STAR DEAD!!");
             PAUSE_RECHARGE_REPAIR = true;
         }
     }
@@ -86,5 +93,16 @@ public class Deathstar : MonoBehaviour
                 charge_amount = 100;
             }
         }
+    }
+
+    private Transform findClosetPlanet() {
+        Transform planet_to_destroy = null;
+        int closest_dist = 100000;
+        foreach (Transform child in planets) {
+            if (Vector3.Distance(planet_to_destroy.position, transform.position) < closest_dist) {
+                planet_to_destroy = child;
+            }
+        }
+        return planet_to_destroy;
     }
 }
