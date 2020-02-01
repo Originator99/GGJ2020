@@ -8050,6 +8050,7 @@ MonoBehaviour:
   - {fileID: 6771640604563366863}
   - {fileID: 6771640604563352297}
   current_gun: {fileID: 0}
+  restocking_time: 2
 --- !u!4 &6771640604556527521
 Transform:
   m_ObjectHideFlags: 0

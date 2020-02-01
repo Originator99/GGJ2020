@@ -39,6 +39,13 @@ public class Deathstar : MonoBehaviour
         }else if(type == EVENT_TYPE.GAME_OVER) {
             PAUSE_RECHARGE_REPAIR = true;
         }
+        if (type == EVENT_TYPE.REPAIR_CIRCLE_SPAWNED) {
+            PAUSE_RECHARGE_REPAIR = true;
+        } else if (type == EVENT_TYPE.REPAIR_COMPLETED) {
+            PAUSE_RECHARGE_REPAIR = false;
+            rechargeDeathStar(Random.Range(1, 5));
+            repairDeathStar(Random.Range(10,15));
+        }
     }
 
     private void Update() {
@@ -47,7 +54,7 @@ public class Deathstar : MonoBehaviour
     }
 
     public void resetRepair() {
-        repair_amount = 25;
+        repair_amount = 40;
     }
     public void resetCharge() {
         charge_amount = 0;
@@ -95,15 +102,17 @@ public class Deathstar : MonoBehaviour
         }
     }
 
-    public void spawnRequirementCircle() {
+    public void spawnRequirementCircle(List<Item> required_items) {
+        Debug.Log("REPAIR THIS NOW!!!");
         int randomIndex = Random.Range(0, repairChickens.childCount);
         Transform temp = Instantiate(requirement_circle_prefab);
-        temp.position = repairChickens.GetChild(randomIndex).position - transform.localScale/2;
-        Vector3 heading = repairChickens.GetChild(randomIndex).position - temp.position;
-        Quaternion rot = Quaternion.LookRotation(heading, Vector3.up);
-        temp.rotation = rot;
-        temp.GetComponent<RequirementCircle>().DoRenderer(Random.Range(15f, 20f));
+        temp.GetComponent<RequirementCircle>().DoRenderer(Random.Range(50f, 70f));
+        temp.GetComponent<RequirementCircle>().renderUI(required_items);
+        temp.position = repairChickens.GetChild(randomIndex).position + repairChickens.GetChild(randomIndex).position * 0.07f;
+        temp.LookAt(transform);
+        temp.Rotate(new Vector3(temp.rotation.x - 90, temp.rotation.y, temp.rotation.z));
 
+        GameEvents.RaiseGameEvent(EVENT_TYPE.REPAIR_CIRCLE_SPAWNED, temp);
     }
 
     private void repairDeathStar(float amount) {
@@ -112,6 +121,7 @@ public class Deathstar : MonoBehaviour
             if (repair_amount >= 100) {
                 repair_amount = 100;
             }
+            UIManager.instance.updateRepairUI(repair_amount);
         }
     }
 
@@ -121,6 +131,7 @@ public class Deathstar : MonoBehaviour
             if (charge_amount >= 100) {
                 charge_amount = 100;
             }
+            UIManager.instance.updateRepairUI(charge_amount);
         }
     }
 

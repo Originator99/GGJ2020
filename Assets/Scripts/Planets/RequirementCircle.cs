@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class RequirementCircle : MonoBehaviour {
     public GameObject prefab;
-    private int numObjects = 50;
+    private int numObjects = 100;
+    public List<Item> required_items;
+
+    public float radius;
 
     public void DoRenderer(float radius) {
-
+        this.radius = radius;
 
         float deltaTheta = (float)(2.0 * Mathf.PI) / numObjects;
         float theta = 0f;
@@ -20,5 +23,11 @@ public class RequirementCircle : MonoBehaviour {
             temp.transform.position = pos;
             theta += deltaTheta;
         }
+    }
+
+    public void renderUI(List<Item> required_items) {
+
+        this.required_items = new List<Item>();
+        this.required_items = required_items;
     }
 }

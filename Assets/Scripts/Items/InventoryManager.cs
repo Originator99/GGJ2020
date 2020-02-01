@@ -45,26 +45,43 @@ public class InventoryManager : MonoBehaviour {
             }
         }
         UpdateUI();
+        GameEvents.OnEventAction += HandleInventoryEvents;
+    }
+
+    private void OnDestroy() {
+        GameEvents.OnEventAction -= HandleInventoryEvents;
+    }
+
+    private void HandleInventoryEvents(EVENT_TYPE type, System.Object data = null) {
+        if (type == EVENT_TYPE.REPAIR_COMPLETED && data != null) {
+            modifyInventory(data as List<Item>,true);
+        }
     }
 
     private void OnApplicationQuit() {
         SaveInventory();
     }
 
-    public void modifyInventory(List<Item> items) {
+    public void modifyInventory(List<Item> items, bool remove = false) {
         for (int i = 0; i < items.Count; i++) {
             for (int j = 0; j < inventory.Count; j++) {
                 if (items[i].item_type == inventory[j].item_type) {
-                    inventory[j].amount += items[i].amount;
+                    if(remove)
+                        inventory[j].amount -= items[i].amount;
+                    else
+                        inventory[j].amount += items[i].amount;
                 }
             }
         }
         UpdateUI();
     }
-    public void modifyInventory(Item item) {
+    public void modifyInventory(Item item, bool remove = false) {
         for (int i = 0; i < inventory.Count; i++) {
             if (inventory[i].item_type == item.item_type) {
-                inventory[i].amount += item.amount;
+                if(remove)
+                    inventory[i].amount -= item.amount;
+                else
+                    inventory[i].amount += item.amount;
             }
         }
         UpdateUI();

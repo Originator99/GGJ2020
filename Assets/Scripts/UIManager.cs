@@ -35,6 +35,13 @@ public class UIManager : MonoBehaviour {
         gameOverPanel.gameObject.SetActive(false);
     }
 
+    public void updateRepairUI(float repair_amount) { 
+    
+    }
+    public void updateChargeUI(float charge_amount) { 
+    
+    }
+
     public void UpdateItemCount(List<Item> items) {
         foreach (Item item in items) {
             if (item.item_type == ItemType.ENERGY) {

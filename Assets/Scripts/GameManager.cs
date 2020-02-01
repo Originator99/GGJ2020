@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     private float spawnCooldown;
     private int MAX_SPAWN_COOLDOWN;
     public int current_enemy_count;
+
+    private bool repair_circle_spawned;
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -30,7 +32,7 @@ public class GameManager : MonoBehaviour {
         if (!game_over) {
             if (spawnCooldown > 0) {
                 spawnCooldown -= Time.deltaTime;
-                if (spawnCooldown <= 0) {
+                if (spawnCooldown <= 0 && !repair_circle_spawned) {
                     SpawnRandomEnemies();
                 }
             }
@@ -45,6 +47,14 @@ public class GameManager : MonoBehaviour {
             game_over = true;
             UIManager.instance.showGameOverPanel();
         }
+        if (type == EVENT_TYPE.REPAIR_CIRCLE_SPAWNED) {
+            repair_circle_spawned = true;
+        }
+        if (type == EVENT_TYPE.REPAIR_COMPLETED) {
+            repair_circle_spawned = false;
+            spawnCooldown = MAX_SPAWN_COOLDOWN;
+            SpawnRandomEnemies();
+        }
     }
 
     private void startGame() {
@@ -53,6 +63,7 @@ public class GameManager : MonoBehaviour {
         current_enemy_count = 0;
         Deathstar.instance.resetCharge();
         Deathstar.instance.resetRepair();
+        LevelHelper.WAVE_NUMBER = 0;
         Invoke("SpawnRandomEnemies", 2f);
     }
 
@@ -62,6 +73,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator countDownSpawn(float seconds) {
+        LevelHelper.WAVE_NUMBER += 1;
         spawnCooldown = MAX_SPAWN_COOLDOWN;
         yield return new WaitForSeconds(seconds);
         GameEvents.RaiseGameEvent(EVENT_TYPE.SPAWN_ENEMY, 0);
@@ -78,8 +90,14 @@ public class GameManager : MonoBehaviour {
         current_enemy_count -= 1;
         Debug.Log("remaining enemies : " + current_enemy_count);
         if (current_enemy_count <= 0) {
-            if(instance!=null)
-                SpawnRandomEnemies();
+            if (instance != null && !game_over) {
+                List<Item> items = new List<Item>();
+                if (LevelHelper.canSpawnRepairCircle(Deathstar.instance.repair_amount, out items)) {
+                    Deathstar.instance.spawnRequirementCircle(items);
+                } else { 
+                    SpawnRandomEnemies();
+                }
+            }
         }
     }
 }

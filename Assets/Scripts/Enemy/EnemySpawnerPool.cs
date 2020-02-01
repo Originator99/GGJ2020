@@ -9,12 +9,12 @@ public class EnemySpawnerPool : MonoBehaviour {
     public void spawnEnemies() {
         int final_count = Random.Range(LevelHelper.getMinEnemySpawn(Deathstar.instance.repair_amount), LevelHelper.getMaxEnemySpawn(Deathstar.instance.repair_amount));
         GameManager.instance.current_enemy_count += final_count;
+        int spawn_point_index = Random.Range(0, spawn_points.Count);
+        if (LevelHelper.WAVE_NUMBER == 1)
+            spawn_point_index = 0;
         for (int i = 0;i< final_count; i++) {
-            //float offset_x = Random.Range(spawn_point.position.x, spawn_point.position.x + 10f);
-            //float offset_y = Random.Range(spawn_point.position.y + 10f, spawn_point.position.x - 10f);
-            //float offset_z = Random.Range(spawn_point.position.z, spawn_point.position.x + 10f);
             GameObject enemy = Instantiate(enemy_prefabs[Random.Range(0, enemy_prefabs.Count)]);
-            Transform spawn_point = spawn_points[Random.Range(0, spawn_points.Count)];
+            Transform spawn_point = spawn_points[spawn_point_index];
             enemy.transform.SetParent(spawn_point);
             enemy.GetComponent<EnemyController>().Spawn(spawn_point.position);
         }
