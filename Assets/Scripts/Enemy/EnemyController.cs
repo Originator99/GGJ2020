@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour {
+    public Image image;
+
     public EnemySO enemy_info;
     public GunController[] shoot_points;
     public Transform flash;
@@ -16,6 +19,8 @@ public class EnemyController : MonoBehaviour {
     private float spaceJumpSpeed, distanceTopStop;
 
     private void Start() {
+        Radar.RegisterRadarObjects(this.gameObject, image);
+
         if(enemy_info == null) {
             Debug.LogError("Enemy data not assigned");
             return;
@@ -68,6 +73,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     private void OnDestroy() {
+        Radar.RemoveRadarObject(this.gameObject);
         GameManager.instance.dropItem(enemy_info.drop, transform.position);
         GameManager.instance.decreaseEnemyCount();
     }
