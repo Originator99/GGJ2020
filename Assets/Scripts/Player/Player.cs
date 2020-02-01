@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
         foreach(var gun in gun_controllers) {
             guns.Add(gun.GetComponent<IGun>());
         }
-        int gun_id = LevelHelper.getGunIDRandom();
+        int gun_id = LevelHelper.getGunIDRandom(); 
         getAndSetGun(gun_id);
     }
 
