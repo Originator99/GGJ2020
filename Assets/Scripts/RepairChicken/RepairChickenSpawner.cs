@@ -4,32 +4,26 @@ using UnityEngine;
 
 public class RepairChickenSpawner : MonoBehaviour
 {
-
-    public GameObject repairChickenPrefab;
-    public GameObject deathStar;
     
-    public List<RepairChicken> chickens = new List<RepairChicken>();
+    public List<RepairChickenSO> chickens = new List<RepairChickenSO>();
 
-    public int chickensToSpawn; 
+    public int chickensToSpawn;
+    private Transform deathStar;
 
-    private void Start()
-    {
-        for (int i = 0; i < chickensToSpawn; i++)
-        {
-            chickens.Add(repairChickenPrefab.GetComponent<RepairChicken>());
-        }
-        foreach (RepairChicken chicken in chickens)
-        {
-            Run(chicken);
+    private void Start() {
+        deathStar = GameObject.FindGameObjectWithTag("DeathStar").transform;
+        for (int i = 0; i < 10; i++) {
+            Run(chickens[0]);
         }
     }
 
-    public void Run(RepairChicken chicken)
+    public void Run(RepairChickenSO chicken)
     {
-        Vector3 spawnPosition = Random.onUnitSphere * ((deathStar.transform.localScale.x / 2) + chicken.transform.localScale.y * 0.5f) + deathStar.transform.position;
-        Quaternion spawnRotation = Quaternion.identity;
-        GameObject newCharacter = Instantiate(chicken.gameObject, spawnPosition, spawnRotation) as GameObject;
+        GameObject newCharacter = Instantiate(chicken.prefab) as GameObject;
+        newCharacter.transform.position = Random.onUnitSphere * ((deathStar.transform.localScale.x / 2) + newCharacter.transform.localScale.y * 0.5f) + deathStar.transform.position;
         newCharacter.transform.LookAt(deathStar.transform);
         newCharacter.transform.Rotate(-90, 0, 0);
+        newCharacter.transform.SetParent(transform);
+        newCharacter.GetComponent<RepairChicken>().StartRepairing(chicken);
     }
 }

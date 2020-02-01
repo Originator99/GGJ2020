@@ -112,12 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &102492170 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3509160698650138515, guid: 97e482aab22a3f84ea09e45405c995fc,
-    type: 3}
-  m_PrefabInstance: {fileID: 1565366793}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &432360962
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,10 +410,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740ac1baacbf99d42a79b7321cbd571c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  repairChickenPrefab: {fileID: 6624800832250168642, guid: 1ff799e318b9d6e47bfacb0e2d59f707,
-    type: 3}
-  deathStar: {fileID: 102492170}
-  chickens: []
+  chickens:
+  - {fileID: 11400000, guid: afb6b43f564b070459a733343ede6538, type: 2}
   chickensToSpawn: 10
 --- !u!1 &1233952614
 GameObject:
