@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SmokeDarkParticle
-  m_Shader: {fileID: 4800000, guid: e4e5d566a8aa9914c906555a6857fcb9, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5cd052ce7ea5a2f438f599e02de6a390, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
