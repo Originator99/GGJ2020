@@ -63,10 +63,13 @@ public class EnemyController : MonoBehaviour {
     public void TakeDamage(float damage) {
         current_health -= damage;
         if (current_health <= 0) {
-            Debug.Log("Energy Dead");
-            GameManager.instance.dropItem(enemy_info.drop, transform.position);
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy() {
+        GameManager.instance.dropItem(enemy_info.drop, transform.position);
+        GameManager.instance.decreaseEnemyCount();
     }
 
     private IEnumerator SpaceJump() {

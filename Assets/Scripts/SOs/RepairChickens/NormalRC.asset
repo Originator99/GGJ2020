@@ -16,4 +16,5 @@ MonoBehaviour:
   _name: Normal Repair Chicken
   repair_capacity: 10
   repair_per_second: 0.1
+  recharge_per_second: 1
   prefab: {fileID: 6624800832250168642, guid: 1ff799e318b9d6e47bfacb0e2d59f707, type: 3}
