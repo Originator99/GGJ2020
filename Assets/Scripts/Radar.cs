@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class RadarObject
 {
@@ -12,16 +11,20 @@ public class RadarObject
 
 public class Radar : MonoBehaviour
 {
-    public Transform playerPos;
+    private Transform playerPos;
     [SerializeField]
     float mapScale = 2.0f;
 
     public static List<RadarObject> radarObjects = new List<RadarObject>();
 
+    private void Start() {
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
     public static void RegisterRadarObjects(GameObject o, Image i)
     {
-        Image image = Instantiate(i);
-        radarObjects.Add(new RadarObject() { owner = o, icon = image});
+        Image radar_icon = Instantiate(i);
+        radarObjects.Add(new RadarObject() { owner = o, icon = radar_icon});
     }
 
     public static void RemoveRadarObject(GameObject o)
