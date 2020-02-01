@@ -16,7 +16,7 @@ public class EnemyPlanet : MonoBehaviour {
     private void HandleEnemySpawnEvents(EVENT_TYPE type, System.Object data = null) {
         if (type == EVENT_TYPE.SPAWN_ENEMY) {
             if ((int)data == planet_info._id) {
-                enemy_spawn.spawnEnemies(planet_info.max_enemy_spawn_count);
+                enemy_spawn.spawnEnemies();
             }
         }
     }

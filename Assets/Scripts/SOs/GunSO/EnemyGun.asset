@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: -1
   gun_name: Enemy Gun
-  damage: 0.05
+  damage: 0.09
   bullet_prefab: {fileID: 132250, guid: e10d3a91efabf8249b7f21fca0c66175, type: 3}
   firerate: 0.5

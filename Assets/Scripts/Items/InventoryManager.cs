@@ -70,6 +70,20 @@ public class InventoryManager : MonoBehaviour {
         UpdateUI();
     }
 
+    public Item getInventoryItem(ItemType itemType) {
+        foreach (Item item in inventory) {
+            if (item.item_type == itemType)
+                return item;
+        }
+        return null;
+    }
+
+    public bool hasEnough(Item item) {
+        if (getInventoryItem(item.item_type).amount >= item.amount)
+            return true;
+        return false;
+    }
+
     private void UpdateUI() {
         //foreach (var item in inventory) {
         //    Debug.Log("Itm : " + item.item_type + " amount : " + item.amount);

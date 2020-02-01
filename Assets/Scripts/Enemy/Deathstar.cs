@@ -14,8 +14,8 @@ public class Deathstar : MonoBehaviour
     }
 
 
-    private float repair_amount;
-    private float charge_amount;
+    public float repair_amount;
+    public float charge_amount;
 
     private bool can_use_death_star;
 
