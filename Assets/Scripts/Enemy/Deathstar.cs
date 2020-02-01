@@ -12,10 +12,18 @@ public class Deathstar : MonoBehaviour
         }
     }
 
+
     private float repair_amount;
     private float charge_amount;
 
     private bool can_use_death_star;
+
+    public bool PAUSE_RECHARGE_REPAIR;
+
+    private void Start() {
+        repair_amount = 50;
+        PAUSE_RECHARGE_REPAIR = false;
+    }
 
     private void Update() {
         if (can_use_death_star && Input.GetKeyDown(KeyCode.Space))
@@ -43,6 +51,7 @@ public class Deathstar : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Repair Amount : " + repair_amount + " Charge Amount : " + charge_amount);
     }
 
     public void UseDeathStar() {
@@ -51,17 +60,31 @@ public class Deathstar : MonoBehaviour
         resetCharge();
     }
 
+
+    public void TakeDamage(float damage) {
+        float amount = (float)damage / 100 * (100 - repair_amount);
+        repair_amount -= amount;
+        if (repair_amount <= 0) {
+            Debug.Log("DEATH STAR DEAD!!");
+            PAUSE_RECHARGE_REPAIR = true;
+        }
+    }
+
     private void repairDeathStar(float amount) {
-        repair_amount += amount;
-        if (repair_amount >= 100) {
-            repair_amount = 100;
+        if (!PAUSE_RECHARGE_REPAIR) {
+            repair_amount += amount;
+            if (repair_amount >= 100) {
+                repair_amount = 100;
+            }
         }
     }
 
     private void rechargeDeathStar(float amount) {
-        charge_amount += amount;
-        if(charge_amount >= 100) {
-            charge_amount = 100;
+        if (!PAUSE_RECHARGE_REPAIR) {
+            charge_amount += amount;
+            if (charge_amount >= 100) {
+                charge_amount = 100;
+            }
         }
     }
 }

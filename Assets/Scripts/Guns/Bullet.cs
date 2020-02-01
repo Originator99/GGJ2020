@@ -14,12 +14,18 @@ public class Bullet : MonoBehaviour {
         Destroy(gameObject, 3);
 	}
 
+    int collider_fix = 0;
     void OnTriggerEnter(Collider col) {
-        if (!isEnemy && col.tag == "Enemy") {
-            col.GetComponent<EnemyController>().TakeDamage(damage);
+        if (collider_fix == 0) {
+            collider_fix++;
+            if (!isEnemy && col.tag == "Enemy") {
+                col.GetComponent<EnemyController>().TakeDamage(damage);
+            } else if (col.tag == "DeathStar") {
+                Deathstar.instance.TakeDamage(damage);
+            }
+            GameObject hit = Instantiate(hit_effect, transform.position, Quaternion.identity);
+            Destroy(hit, 0.5f);
         }
-        GameObject hit = Instantiate(hit_effect, transform.position, Quaternion.identity);
-        Destroy(hit, 0.5f);
-        Destroy(gameObject,1f);
+        Destroy(gameObject, 1f);
     }
 }

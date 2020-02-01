@@ -26,3 +26,7 @@ MonoBehaviour:
     amount: 15
     Icon: {fileID: 0}
     prefab: {fileID: 306047147651531187, guid: 4c702d6eb11b0384fac7920bb75a8da9, type: 3}
+  - item_type: 2
+    amount: 15
+    Icon: {fileID: 0}
+    prefab: {fileID: 306047147651531187, guid: 4c702d6eb11b0384fac7920bb75a8da9, type: 3}
