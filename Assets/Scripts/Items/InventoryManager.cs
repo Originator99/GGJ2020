@@ -44,6 +44,7 @@ public class InventoryManager : MonoBehaviour {
                     item.amount = energy;
             }
         }
+        UpdateUI();
     }
 
     private void OnApplicationQuit() {
@@ -70,9 +71,9 @@ public class InventoryManager : MonoBehaviour {
     }
 
     private void UpdateUI() {
-        foreach (var item in inventory) {
-            Debug.Log("Itm : " + item.item_type + " amount : " + item.amount);
-        }
+        //foreach (var item in inventory) {
+        //    Debug.Log("Itm : " + item.item_type + " amount : " + item.amount);
+        //}
         UIManager.instance.UpdateItemCount(inventory);
     }
 

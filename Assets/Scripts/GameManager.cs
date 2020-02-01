@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
-
+    private bool game_over;
     private float spawnCooldown;
     private int MAX_SPAWN_COOLDOWN;
     public int current_enemy_count;
@@ -17,21 +17,48 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
+        GameEvents.OnEventAction += HandleGameManagerEvents;
+        game_over = false;
         MAX_SPAWN_COOLDOWN = 300;
-        Invoke("SpawnRandomEnemies", 2f);
+    }
+
+    private void OnDestroy() {
+        GameEvents.OnEventAction -= HandleGameManagerEvents;
     }
 
     private void Update() {
-        if (spawnCooldown > 0) {
-            spawnCooldown -= Time.deltaTime;
-            if (spawnCooldown <= 0) {
-                SpawnRandomEnemies();
+        if (!game_over) {
+            if (spawnCooldown > 0) {
+                spawnCooldown -= Time.deltaTime;
+                if (spawnCooldown <= 0) {
+                    SpawnRandomEnemies();
+                }
             }
         }
     }
 
+    private void HandleGameManagerEvents(EVENT_TYPE type, System.Object data = null) {
+        if (type == EVENT_TYPE.GAME_START) {
+            startGame();
+        }
+        if (type == EVENT_TYPE.GAME_OVER) {
+            game_over = true;
+            UIManager.instance.showGameOverPanel();
+        }
+    }
+
+    private void startGame() {
+        game_over = false;
+        UIManager.instance.startUIGame();
+        current_enemy_count = 0;
+        Deathstar.instance.resetCharge();
+        Deathstar.instance.resetRepair();
+        Invoke("SpawnRandomEnemies", 2f);
+    }
+
     private void SpawnRandomEnemies() {
-        StartCoroutine(countDownSpawn(2f));
+        if(!game_over)
+            StartCoroutine(countDownSpawn(2f));
     }
 
     private IEnumerator countDownSpawn(float seconds) {
@@ -51,7 +78,8 @@ public class GameManager : MonoBehaviour {
         current_enemy_count -= 1;
         Debug.Log("remaining enemies : " + current_enemy_count);
         if (current_enemy_count <= 0) {
-            SpawnRandomEnemies();
+            if(instance!=null)
+                SpawnRandomEnemies();
         }
     }
 }

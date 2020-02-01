@@ -5,12 +5,34 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour {
 
     public Text energy, metal, stone;
+    public StartPanel startPanel;
+    public GameOverPanel gameOverPanel;
 
     public static UIManager instance;
     private void Awake() {
         if(instance == null) {
             instance = this;
         }
+    }
+
+    private void Start() {
+        showStartPanel();
+    }
+
+    public void showStartPanel() {
+        startPanel.renderStarPanel();
+        gameOverPanel.gameObject.SetActive(false);
+
+    }
+
+    public void showGameOverPanel() {
+        startPanel.gameObject.SetActive(false);
+        gameOverPanel.renderGameOverPanel();
+    }
+
+    public void startUIGame() {
+        startPanel.gameObject.SetActive(false);
+        gameOverPanel.gameObject.SetActive(false);
     }
 
     public void UpdateItemCount(List<Item> items) {
