@@ -17,3 +17,12 @@ MonoBehaviour:
   health: 10
   gun_id: -1
   die_effect: {fileID: 0}
+  drop:
+  - item_type: 0
+    amount: 15
+    Icon: {fileID: 0}
+    prefab: {fileID: 855912757685791606, guid: 916345881a607474b9b60d0d6e46a379, type: 3}
+  - item_type: 1
+    amount: 15
+    Icon: {fileID: 0}
+    prefab: {fileID: 306047147651531187, guid: 4c702d6eb11b0384fac7920bb75a8da9, type: 3}

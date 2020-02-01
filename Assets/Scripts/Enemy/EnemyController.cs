@@ -11,9 +11,9 @@ public class EnemyController : MonoBehaviour {
     private List<IGun> guns;
     private Transform target_to_hit;
 
+    private float current_health;
     private bool canShoot, canMove;
     private float spaceJumpSpeed, distanceTopStop;
-    private Rigidbody rb;
 
     private void Start() {
         if(enemy_info == null) {
@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour {
         }
         int gun_id = enemy_info.gun_id;
         getAndSetGun(gun_id);
-        rb = GetComponent<Rigidbody>();
+        current_health = enemy_info.health;
         target_to_hit = GameObject.FindGameObjectWithTag("DeathStar").transform;
     }
 
@@ -58,6 +58,15 @@ public class EnemyController : MonoBehaviour {
         transform.LookAt(target_to_hit);
         canMove = true;
         StartCoroutine(SpaceJump());
+    }
+
+    public void TakeDamage(float damage) {
+        current_health -= damage;
+        if (current_health <= 0) {
+            Debug.Log("Energy Dead");
+            GameManager.instance.dropItem(enemy_info.drop, transform.position);
+            Destroy(gameObject);
+        }
     }
 
     private IEnumerator SpaceJump() {
