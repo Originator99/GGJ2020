@@ -14,7 +14,7 @@ public class GunController : MonoBehaviour, IGun {
         camera = Camera.main.transform;
 	}
 
-    public void Shoot() {
+    public void Shoot(bool is_enemy = false) {
         if (isOnCoolDown) return;
         //var effect = Instantiate(shootEffect, transform.position, Quaternion.identity) as GameObject;
         //effect.transform.parent = transform;
@@ -23,6 +23,9 @@ public class GunController : MonoBehaviour, IGun {
         var bullet = Instantiate(_gun.bullet_prefab, transform.position, transform.rotation) as GameObject;
         bullet.GetComponent<Bullet>().damage = _gun.damage;
         bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 80, ForceMode.Impulse);
+        if (is_enemy) {
+            bullet.name = "enemy";
+        }
 
         RaycastHit hit;
         if(Physics.Raycast(camera.position, camera.forward, out hit)) {

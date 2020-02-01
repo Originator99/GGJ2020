@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour {
             collider_fix++;
             if (!isEnemy && col.tag == "Enemy") {
                 col.GetComponent<EnemyController>().TakeDamage(damage);
-            } else if (col.tag == "DeathStar") {
+            } else if (col.tag == "DeathStar" && transform.name == "enemy") {
                 Deathstar.instance.TakeDamage(damage);
             }
             GameObject hit = Instantiate(hit_effect, transform.position, Quaternion.identity);

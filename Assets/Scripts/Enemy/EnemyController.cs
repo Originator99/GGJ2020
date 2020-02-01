@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour {
+    public Image radar_icon;
+
     public EnemySO enemy_info;
     public GunController[] shoot_points;
     public Transform flash;
@@ -16,6 +19,8 @@ public class EnemyController : MonoBehaviour {
     private float spaceJumpSpeed, distanceTopStop;
 
     private void Start() {
+        Radar.RegisterRadarObjects(this.gameObject, radar_icon);
+
         if(enemy_info == null) {
             Debug.LogError("Enemy data not assigned");
             return;
@@ -28,6 +33,13 @@ public class EnemyController : MonoBehaviour {
         getAndSetGun(gun_id);
         current_health = enemy_info.health;
         target_to_hit = GameObject.FindGameObjectWithTag("DeathStar").transform;
+        GameEvents.OnEventAction += HandleEnemyEvents;
+    }
+
+    private void HandleEnemyEvents(EVENT_TYPE type, System.Object data = null) { 
+        if(type == EVENT_TYPE.GAME_OVER) {
+            Destroy(gameObject);
+        }
     }
 
     private void Update() {
@@ -47,7 +59,7 @@ public class EnemyController : MonoBehaviour {
 
         if (canShoot) {
             foreach (var b in guns) {
-                b.Shoot();
+                b.Shoot(true);
             }
         }
     }
@@ -63,12 +75,14 @@ public class EnemyController : MonoBehaviour {
     public void TakeDamage(float damage) {
         current_health -= damage;
         if (current_health <= 0) {
+            GameManager.instance.dropItem(enemy_info.drop, transform.position);
             Destroy(gameObject);
         }
     }
 
     private void OnDestroy() {
-        GameManager.instance.dropItem(enemy_info.drop, transform.position);
+        GameEvents.OnEventAction -= HandleEnemyEvents;
+        Radar.RemoveRadarObject(this.gameObject);
         GameManager.instance.decreaseEnemyCount();
     }
 

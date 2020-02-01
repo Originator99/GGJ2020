@@ -22,8 +22,20 @@ public class Deathstar : MonoBehaviour
     public bool PAUSE_RECHARGE_REPAIR;
 
     private void Start() {
-        repair_amount = 50;
-        PAUSE_RECHARGE_REPAIR = false;
+        GameEvents.OnEventAction += HandleDeathStarEvents;
+    }
+
+    private void OnDestroy() {
+        GameEvents.OnEventAction += HandleDeathStarEvents;
+
+    }
+
+    private void HandleDeathStarEvents(EVENT_TYPE type, System.Object data = null) { 
+        if(type == EVENT_TYPE.GAME_START) {
+            PAUSE_RECHARGE_REPAIR = false;
+        }else if(type == EVENT_TYPE.GAME_OVER) {
+            PAUSE_RECHARGE_REPAIR = true;
+        }
     }
 
     private void Update() {
@@ -32,7 +44,7 @@ public class Deathstar : MonoBehaviour
     }
 
     public void resetRepair() {
-        repair_amount = 0;
+        repair_amount = 25;
     }
     public void resetCharge() {
         charge_amount = 0;
@@ -52,7 +64,7 @@ public class Deathstar : MonoBehaviour
                 }
             }
         }
-       // Debug.Log("Repair Amount : " + repair_amount + " Charge Amount : " + charge_amount);
+        Debug.Log("Repair Amount : " + repair_amount + " Charge Amount : " + charge_amount);
     }
 
     public void UseDeathStar() {
@@ -63,7 +75,11 @@ public class Deathstar : MonoBehaviour
 
     private IEnumerator DeathStarAnimation() {
         Transform target = findClosetPlanet();
+        GameObject.Destroy(target.gameObject);
         resetCharge();
+        if (planets.childCount <= 0) {
+            GameEvents.RaiseGameEvent(EVENT_TYPE.GAME_OVER);
+        }
         yield break;
     }
 
@@ -72,8 +88,7 @@ public class Deathstar : MonoBehaviour
         float amount = (float)damage / 100 * (100 - repair_amount);
         repair_amount -= amount;
         if (repair_amount <= 0) {
-            //Debug.Log("DEATH STAR DEAD!!");
-            PAUSE_RECHARGE_REPAIR = true;
+            GameEvents.RaiseGameEvent(EVENT_TYPE.GAME_OVER);
         }
     }
 
