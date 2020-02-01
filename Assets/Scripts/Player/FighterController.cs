@@ -4,7 +4,10 @@ using System.Collections;
 public class FighterController : MonoBehaviour {
 
     [SerializeField]
-    public int maxSpeed;
+    private int maxSpeed = 200;
+
+    [SerializeField]
+    private float accelerator = 5000;
 
     [SerializeField]
     private int turnSpeed;
@@ -30,6 +33,15 @@ public class FighterController : MonoBehaviour {
 
         ntrueYaw = Mathf.Lerp(ntrueYaw, trueYaw, Time.deltaTime * 4);
         ntruePitch = Mathf.Lerp(ntruePitch, truePitch, Time.deltaTime * 4);
+
+        if (Input.GetKey(KeyCode.LeftShift)) { 
+            maxSpeed = 1000;
+            accelerator = 10000;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift)) { 
+            maxSpeed = 200;
+            accelerator = 5000;
+        }
     }
 
     void FixedUpdate() {
@@ -38,8 +50,8 @@ public class FighterController : MonoBehaviour {
         float moveY = 0;
         float currentSpeed = GetComponent<Rigidbody>().velocity.magnitude;
 
-        if (Input.GetKey(KeyCode.W)) accel = 5000;
-        else if (Input.GetKey(KeyCode.S)) accel = -5000;
+        if (Input.GetKey(KeyCode.W)) accel = accelerator;
+        else if (Input.GetKey(KeyCode.S)) accel = -accelerator;
 
         Quaternion newRot = Quaternion.Euler(tr.eulerAngles.x, tr.eulerAngles.y, 0);
         if (Input.GetKey(KeyCode.A)) {

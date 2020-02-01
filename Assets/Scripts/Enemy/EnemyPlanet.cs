@@ -2,28 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPlanet : MonoBehaviour
-{
-    float health = 100;
+public class EnemyPlanet : MonoBehaviour {
+    public EnemySpawnerPool enemy_spawn;
+    public PlanetSO planet_info;
 
-    public GameObject sphere;
+    private float current_health;
 
-    public GameObject explosionPrefab;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Deathstar.OnAttackTarget += OnAttackTarget;
+    private void Start() {
+        current_health = planet_info.health;
+        GameEvents.OnEventAction += HandleEnemySpawnEvents;
     }
 
-    private void OnAttackTarget()
-    {
-        health -= 100;
-        if (health<=0)
-        {
-            sphere.SetActive(false);
-            explosionPrefab.SetActive(true);
-            Debug.Log("Planet Detroyed!!");
+    private void HandleEnemySpawnEvents(EVENT_TYPE type, System.Object data = null) {
+        if (type == EVENT_TYPE.SPAWN_ENEMY) {
+            if ((int)data == planet_info._id) {
+                enemy_spawn.spawnEnemies(planet_info.max_enemy_spawn_count);
+            }
         }
     }
 }
