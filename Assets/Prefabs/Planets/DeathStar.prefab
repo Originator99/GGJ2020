@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3509160698650138515}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 514, y: 0, z: 0}
-  m_LocalScale: {x: 1000, y: 1000, z: 1000}
+  m_LocalScale: {x: 500, y: 500, z: 500}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -104,5 +104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: badd3a76027d80c4fafa8abba991d897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  charge: 0
+  planets: {fileID: 0}
+  repairChickens: {fileID: 0}
+  requirement_circle_prefab: {fileID: 2283488510652584547, guid: ff43aecb32bee3c43a33128052eb77ac,
+    type: 3}
+  repair_amount: 0
+  charge_amount: 0
+  PAUSE_RECHARGE_REPAIR: 0

@@ -5,6 +5,8 @@ using UnityEngine;
 public class Deathstar : MonoBehaviour
 {
     public Transform planets;
+    public Transform repairChickens;
+    public Transform requirement_circle_prefab;
 
     public static Deathstar instance;
     private void Awake() {
@@ -23,6 +25,7 @@ public class Deathstar : MonoBehaviour
 
     private void Start() {
         GameEvents.OnEventAction += HandleDeathStarEvents;
+        Invoke("spawnRequirementCircle", 2f);
     }
 
     private void OnDestroy() {
@@ -90,6 +93,17 @@ public class Deathstar : MonoBehaviour
         if (repair_amount <= 0) {
             GameEvents.RaiseGameEvent(EVENT_TYPE.GAME_OVER);
         }
+    }
+
+    public void spawnRequirementCircle() {
+        int randomIndex = Random.Range(0, repairChickens.childCount);
+        Transform temp = Instantiate(requirement_circle_prefab);
+        temp.position = repairChickens.GetChild(randomIndex).position - transform.localScale/2;
+        Vector3 heading = repairChickens.GetChild(randomIndex).position - temp.position;
+        Quaternion rot = Quaternion.LookRotation(heading, Vector3.up);
+        temp.rotation = rot;
+        temp.GetComponent<RequirementCircle>().DoRenderer(Random.Range(15f, 20f));
+
     }
 
     private void repairDeathStar(float amount) {
