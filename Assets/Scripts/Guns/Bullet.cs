@@ -16,10 +16,10 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider col) {
         if (!isEnemy && col.tag == "Enemy") {
-            // apply damage to enemy
-            //col.GetComponent<BotAttackController>().ApplyDamage(damage);
+            col.GetComponent<EnemyController>().TakeDamage(damage);
         }
-        Instantiate(hit_effect, transform.position, Quaternion.identity);
+        GameObject hit = Instantiate(hit_effect, transform.position, Quaternion.identity);
+        Destroy(hit, 0.5f);
         Destroy(gameObject,1f);
     }
 }

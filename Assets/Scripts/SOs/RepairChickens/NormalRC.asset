@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e264e3f92445554a86659031b35e4a7, type: 3}
+  m_Name: NormalRC
+  m_EditorClassIdentifier: 
+  _id: 1
+  _name: Normal Repair Chicken
+  repair_capacity: 10
+  repair_per_second: 0.1
+  prefab: {fileID: 6624800832250168642, guid: 1ff799e318b9d6e47bfacb0e2d59f707, type: 3}

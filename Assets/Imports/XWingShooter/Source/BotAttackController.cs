@@ -30,7 +30,7 @@ public class BotAttackController : MonoBehaviour {
 	void Start () {
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
-        mainBase = GameObject.FindGameObjectWithTag("MainBase").transform;
+        mainBase = GameObject.FindGameObjectWithTag("DeathStar").transform;
 	}
 	
 	void Update () {
