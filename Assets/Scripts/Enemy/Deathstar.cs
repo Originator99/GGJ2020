@@ -42,6 +42,8 @@ public class Deathstar : MonoBehaviour
 
     private void HandleDeathStarEvents(EVENT_TYPE type, System.Object data = null) { 
         if(type == EVENT_TYPE.GAME_START) {
+            foreach (Transform planet in planets)
+                planet.gameObject.SetActive(true); //enabling after destroying
             PAUSE_RECHARGE_REPAIR = false;
         }else if(type == EVENT_TYPE.GAME_OVER) {
             PAUSE_RECHARGE_REPAIR = true;
@@ -163,6 +165,7 @@ public class Deathstar : MonoBehaviour
 
     public void UseDeathStar() {
         Debug.Log("Death star out !");
+        UIManager.instance.showUseDeathStar(false);
         can_use_death_star = false;
         UIManager.instance.showUseDeathStar(true);
         StartCoroutine(DeathStarAnimation());
@@ -172,8 +175,8 @@ public class Deathstar : MonoBehaviour
         Transform target = findClosetPlanet();
         if (target == null) {
             GameEvents.RaiseGameEvent(EVENT_TYPE.GAME_OVER);
-        } else { 
-            GameObject.Destroy(target.gameObject);
+        } else {
+            target.gameObject.SetActive(false);
             resetCharge();
         }
         yield break;
@@ -225,7 +228,7 @@ public class Deathstar : MonoBehaviour
         Transform planet_to_destroy = null;
         int closest_dist = 100000;
         foreach (Transform child in planets) {
-            if (Vector3.Distance(planet_to_destroy.position, transform.position) < closest_dist && child.name.ToLower().Contains("sphere")) {
+            if (Vector3.Distance(child.position, transform.position) < closest_dist && child.name.ToLower().Contains("sphere")) {
                 planet_to_destroy = child;
             }
         }
