@@ -83,6 +83,7 @@ public class EnemyController : MonoBehaviour {
     public void TakeDamage(float damage) {
         current_health -= damage;
         if (current_health <= 0) {
+            Radar.RemoveRadarObject(this.gameObject);
             GameManager.instance.dropItem(enemy_info.drop, transform.position);
             Destroy(gameObject);
         }
@@ -90,7 +91,6 @@ public class EnemyController : MonoBehaviour {
 
     private void OnDestroy() {
         GameEvents.OnEventAction -= HandleEnemyEvents;
-        Radar.RemoveRadarObject(this.gameObject);
         GameManager.instance.decreaseEnemyCount();
     }
 
