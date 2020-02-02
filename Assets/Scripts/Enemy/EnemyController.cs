@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour {
     private GunSO current_gun;
     private List<IGun> guns;
     private Transform target_to_hit;
+    private AudioSource flash_sound;
 
     private float current_health;
     private bool canShoot, canMove;
@@ -34,6 +35,7 @@ public class EnemyController : MonoBehaviour {
         current_health = enemy_info.health;
         target_to_hit = GameObject.FindGameObjectWithTag("DeathStar").transform;
         GameEvents.OnEventAction += HandleEnemyEvents;
+        flash_sound = flash.GetComponent<AudioSource>();
     }
 
     private void HandleEnemyEvents(EVENT_TYPE type, System.Object data = null) { 
@@ -93,11 +95,15 @@ public class EnemyController : MonoBehaviour {
     }
 
     private IEnumerator SpaceJump() {
-        yield return new WaitForSeconds(0.5f);
+        float random_wait_time = Random.Range(0.5f, 1f);
+        yield return new WaitForSeconds(random_wait_time);
         flash.gameObject.SetActive(true);
         spaceJumpSpeed = 1000f;
         distanceTopStop = Random.Range(280, 320);
         float time_taken = Vector3.Distance(target_to_hit.position, transform.position) / spaceJumpSpeed;
+        if (flash_sound != null) {
+            flash_sound.Play();
+        }
         yield return new WaitForSeconds(time_taken);
         flash.gameObject.SetActive(false);
         yield break;
