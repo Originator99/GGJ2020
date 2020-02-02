@@ -84,6 +84,9 @@ public class EnemyController : MonoBehaviour {
         current_health -= damage;
         if (current_health <= 0) {
             Radar.RemoveRadarObject(this.gameObject);
+            if (enemy_info.die_effect != null) {
+                Instantiate(enemy_info.die_effect, transform.position, Quaternion.identity);
+            }
             GameManager.instance.dropItem(enemy_info.drop, transform.position);
             Destroy(gameObject);
         }
