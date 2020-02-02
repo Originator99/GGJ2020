@@ -8,6 +8,13 @@ public class Deathstar : MonoBehaviour
     public Transform repairChickens;
     public Transform requirement_circle_prefab;
 
+    public GameObject deathstar0;
+    public GameObject deathstar20;
+    public GameObject deathstar40;
+    public GameObject deathstar60;
+    public GameObject deathstar80;
+    public GameObject deathstar100;
+
     public static Deathstar instance;
     private void Awake() {
         if (instance == null) {
@@ -60,21 +67,89 @@ public class Deathstar : MonoBehaviour
         charge_amount = 0;
     }
 
-    public void repairOrRecharge(RepairChickenSO rc_info) {
-        if (repair_amount < 100) {
+    public void repairOrRecharge(RepairChickenSO rc_info)
+    {
+        if (repair_amount < 100)
+        {
             repairDeathStar(rc_info.repair_per_second);
-        } else if (repair_amount >= 100) {
+        }
+        else if (repair_amount >= 100)
+        {
             //Debug.Log("Repair Done");
-            if (charge_amount < 100) {
+            if (charge_amount < 100)
+            {
                 rechargeDeathStar(rc_info.recharge_per_second);
-            } else {
+            }
+            else
+            {
                 //Debug.Log("Charge done");
-                if (!can_use_death_star) {
+                if (!can_use_death_star)
+                {
                     can_use_death_star = true;
                 }
             }
         }
+
+        UpdateDeathStarState();
         Debug.Log("Repair Amount : " + repair_amount + " Charge Amount : " + charge_amount);
+    }
+
+    private void UpdateDeathStarState()
+    {
+        if (repair_amount >= 100)
+        {
+            deathstar100.SetActive(true);
+            deathstar0.SetActive(false);
+            deathstar20.SetActive(false);
+            deathstar40.SetActive(false);
+            deathstar60.SetActive(false);
+            deathstar80.SetActive(false);
+        }
+        else if (repair_amount >= 80)
+        {
+            deathstar100.SetActive(false);
+            deathstar0.SetActive(false);
+            deathstar20.SetActive(false);
+            deathstar40.SetActive(false);
+            deathstar60.SetActive(false);
+            deathstar80.SetActive(true);
+        }
+        else if (repair_amount >= 60)
+        {
+            deathstar100.SetActive(false);
+            deathstar0.SetActive(false);
+            deathstar20.SetActive(false);
+            deathstar40.SetActive(false);
+            deathstar60.SetActive(true);
+            deathstar80.SetActive(false);
+        }
+        else if (repair_amount >= 40)
+        {
+            deathstar100.SetActive(false);
+            deathstar0.SetActive(false);
+            deathstar20.SetActive(false);
+            deathstar40.SetActive(true);
+            deathstar60.SetActive(false);
+            deathstar80.SetActive(false);
+        }
+        else if (repair_amount > 20)
+        {
+            deathstar100.SetActive(false);
+            deathstar0.SetActive(false);
+            deathstar20.SetActive(true);
+            deathstar40.SetActive(false);
+            deathstar60.SetActive(false);
+            deathstar80.SetActive(false);
+        }
+        else
+        {
+            deathstar100.SetActive(false);
+            deathstar0.SetActive(true);
+            deathstar20.SetActive(false);
+            deathstar40.SetActive(false);
+            deathstar60.SetActive(false);
+            deathstar80.SetActive(false);
+        }
     }
 
     public void UseDeathStar() {
