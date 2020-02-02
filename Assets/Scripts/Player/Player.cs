@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
     public GunController[] gun_controllers;
     public GunSO current_gun;
+    public GameObject dropItemBar;
 
     public float restocking_time = 2f;
     private float restocking_cooldown;
@@ -12,9 +14,11 @@ public class Player : MonoBehaviour {
     private List<IGun> guns;
     private bool can_controll_player;
 
+    private bool isOutsideArea = true;
     private bool checkForRepairing;
     private Transform repair_circle;
     private float radius_of_repair_circle;
+
 
     private void Start() {
         guns = new List<IGun>();
@@ -41,6 +45,7 @@ public class Player : MonoBehaviour {
             restocking_cooldown = restocking_time;
         }
         if (type == EVENT_TYPE.REPAIR_COMPLETED) {
+            dropItemBar.transform.GetChild(0).gameObject.SetActive(false);
             checkForRepairing = false;
         }
     }
@@ -54,15 +59,22 @@ public class Player : MonoBehaviour {
         }
         if (checkForRepairing && repair_circle != null) {
             if (Vector3.Distance(repair_circle.position, transform.position) < radius_of_repair_circle) {
+                dropItemBar.transform.GetChild(0).gameObject.SetActive(true);
+                isOutsideArea = false;
                 restocking_cooldown -= Time.deltaTime;
+                dropItemBar.transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = restocking_cooldown/2;
                 if (restocking_cooldown <= 0) {
                     checkForRepairing = false;
                     Debug.Log("Repair Complete!");
+                    dropItemBar.transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = 1;
+                    dropItemBar.transform.GetChild(0).gameObject.SetActive(false);
                     GameEvents.RaiseGameEvent(EVENT_TYPE.REPAIR_COMPLETED, repair_circle.GetComponent<RequirementCircle>().required_items);
                     Destroy(repair_circle.gameObject);
                 }
             } else {
                 restocking_cooldown = restocking_time;
+                if(dropItemBar.transform.GetChild(0).gameObject.activeInHierarchy)
+                    dropItemBar.transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = 1;
             }
         }
     }
