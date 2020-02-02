@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
@@ -105,8 +106,8 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+        UIManager.instance.updateEnemyCount(current_enemy_count);
     }
-
     public IEnumerator doSomethingAfterDelay(float delay, System.Action callback) {
         yield return new WaitForSeconds(delay);
         callback?.Invoke();

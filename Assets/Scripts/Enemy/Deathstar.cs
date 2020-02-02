@@ -56,15 +56,23 @@ public class Deathstar : MonoBehaviour
     }
 
     private void Update() {
-        if (can_use_death_star && Input.GetKeyDown(KeyCode.Space))
+        if (can_use_death_star && Input.GetKeyDown(KeyCode.KeypadEnter)) { 
             UseDeathStar();
+        }
+        if (Input.GetKeyDown(KeyCode.F2)) {
+            repair_amount = 100;
+            charge_amount = 100;
+            UIManager.instance.updateRepairUI(repair_amount);
+            UIManager.instance.updateChargeUI(charge_amount);
+            PAUSE_RECHARGE_REPAIR = true;
+        }
     }
 
     public void resetRepair() {
         repair_amount = 40;
     }
     public void resetCharge() {
-        charge_amount = 0;
+        charge_amount = 100;
     }
 
     public void repairOrRecharge(RepairChickenSO rc_info)
@@ -85,6 +93,7 @@ public class Deathstar : MonoBehaviour
                 //Debug.Log("Charge done");
                 if (!can_use_death_star)
                 {
+                    UIManager.instance.showUseDeathStar(true);
                     can_use_death_star = true;
                 }
             }
@@ -155,15 +164,17 @@ public class Deathstar : MonoBehaviour
     public void UseDeathStar() {
         Debug.Log("Death star out !");
         can_use_death_star = false;
+        UIManager.instance.showUseDeathStar(true);
         StartCoroutine(DeathStarAnimation());
     }
 
     private IEnumerator DeathStarAnimation() {
         Transform target = findClosetPlanet();
-        GameObject.Destroy(target.gameObject);
-        resetCharge();
-        if (planets.childCount <= 0) {
+        if (target == null) {
             GameEvents.RaiseGameEvent(EVENT_TYPE.GAME_OVER);
+        } else { 
+            GameObject.Destroy(target.gameObject);
+            resetCharge();
         }
         yield break;
     }
@@ -206,7 +217,7 @@ public class Deathstar : MonoBehaviour
             if (charge_amount >= 100) {
                 charge_amount = 100;
             }
-            UIManager.instance.updateRepairUI(charge_amount);
+            UIManager.instance.updateChargeUI(charge_amount);
         }
     }
 
@@ -214,7 +225,7 @@ public class Deathstar : MonoBehaviour
         Transform planet_to_destroy = null;
         int closest_dist = 100000;
         foreach (Transform child in planets) {
-            if (Vector3.Distance(planet_to_destroy.position, transform.position) < closest_dist) {
+            if (Vector3.Distance(planet_to_destroy.position, transform.position) < closest_dist && child.name.ToLower().Contains("sphere")) {
                 planet_to_destroy = child;
             }
         }
