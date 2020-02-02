@@ -35,13 +35,15 @@ public class FighterController : MonoBehaviour {
     }
 
     private void HandlePlayerEvents(EVENT_TYPE type, System.Object data = null) {
-        if (type == EVENT_TYPE.GAME_START) {
+        if (type == EVENT_TYPE.GAME_START) { 
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             can_controll_player = true;
         }
         if (type == EVENT_TYPE.GAME_OVER) {
             Cursor.lockState = CursorLockMode.None;
             can_controll_player = false;
+            Cursor.visible = true;
         }
     }
 
