@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour {
     public GameOverPanel gameOverPanel;
 
     public Transform deathStarVideoRawImage;
-    public VideoPlayer videoPlayer, intro_player;
+    public VideoPlayer videoPlayer, intro_player, spaceJump_videoplayer;
 
     public static UIManager instance;
     private void Awake() {
@@ -64,9 +64,17 @@ public class UIManager : MonoBehaviour {
     public void playIntroVideo(System.Action after_video) {
         deathStarVideoRawImage.gameObject.SetActive(true);
         intro_player.Play();
-        StartCoroutine(GameManager.instance.doSomethingAfterDelay(23f, delegate () {
+        StartCoroutine(GameManager.instance.doSomethingAfterDelay(38f, delegate () {
+            playIntroPart2(after_video);
+        }));
+    }
+
+    public void playIntroPart2(System.Action after_videoIntro) {
+        deathStarVideoRawImage.gameObject.SetActive(true);
+        spaceJump_videoplayer.Play();
+        StartCoroutine(GameManager.instance.doSomethingAfterDelay(10f, delegate () {
             deathStarVideoRawImage.gameObject.SetActive(false);
-            after_video?.Invoke();
+            after_videoIntro?.Invoke();
         }));
     }
 
