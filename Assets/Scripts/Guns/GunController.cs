@@ -5,6 +5,8 @@ public class GunController : MonoBehaviour, IGun {
 
     [SerializeField]
     private GameObject flashOnShoot;
+    [SerializeField]
+    private AudioSource shoot_sound;
 
     private GunSO _gun;
     private new Transform camera;
@@ -34,6 +36,9 @@ public class GunController : MonoBehaviour, IGun {
 
         isOnCoolDown = true;
         StartCoroutine(Cooldown());
+        if (shoot_sound != null) {
+            shoot_sound.Play();
+        }
     }
 	
 	private IEnumerator Cooldown() {

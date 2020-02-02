@@ -43,4 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6b592df0678764f85c4c732874bc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radar_icon: {fileID: 6271177900581343050, guid: 7b43faccd4ded5a4faf810605ba19386,
+    type: 3}
   prefab: {fileID: 5241290723660211443, guid: 0b13ca2b7ef05ce4ca3ded05b347c7a1, type: 3}
+  required_items: []
+  radius: 0

@@ -1,14 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RequirementCircle : MonoBehaviour {
+    public Image radar_icon;
     public GameObject prefab;
     private int numObjects = 100;
     public List<Item> required_items;
 
     public float radius;
 
+    private void OnEnable() {
+        Radar.RegisterRadarObjects(gameObject, radar_icon);
+    }
+    private void OnDisable() {
+        Radar.RemoveRadarObject(gameObject);
+    }
     public void DoRenderer(float radius) {
         this.radius = radius;
 

@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
+    public AudioSource first_message, bg_music, enemy_spawn_sound;
+
     private bool game_over;
     private float spawnCooldown;
     private int MAX_SPAWN_COOLDOWN;
@@ -64,6 +66,9 @@ public class GameManager : MonoBehaviour {
         Deathstar.instance.resetCharge();
         Deathstar.instance.resetRepair();
         LevelHelper.WAVE_NUMBER = 0;
+        if (!bg_music.isPlaying) { 
+            bg_music.Play();
+        }
         Invoke("SpawnRandomEnemies", 2f);
     }
 
@@ -77,6 +82,7 @@ public class GameManager : MonoBehaviour {
         spawnCooldown = MAX_SPAWN_COOLDOWN;
         yield return new WaitForSeconds(seconds);
         GameEvents.RaiseGameEvent(EVENT_TYPE.SPAWN_ENEMY, 0);
+        enemy_spawn_sound.Play();
     }
 
     public void dropItem(List<Item> items, Vector3 position) {
@@ -99,5 +105,10 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public IEnumerator doSomethingAfterDelay(float delay, System.Action callback) {
+        yield return new WaitForSeconds(delay);
+        callback?.Invoke();
     }
 }

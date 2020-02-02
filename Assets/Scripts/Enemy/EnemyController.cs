@@ -64,6 +64,12 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
+    private void FixedUpdate() {
+        if (canShoot && (Vector3.Distance(target_to_hit.position, transform.position) > 450)) {
+            TakeDamage(5000);
+        }
+    }
+
     public void Spawn(Vector3 spawn_point) {
         canShoot = false;
         transform.position = spawn_point;
