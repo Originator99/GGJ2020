@@ -74,7 +74,7 @@ public class Deathstar : MonoBehaviour
         repair_amount = 40;
     }
     public void resetCharge() {
-        charge_amount = 100;
+        charge_amount = 0;
     }
 
     public void repairOrRecharge(RepairChickenSO rc_info)
@@ -95,8 +95,10 @@ public class Deathstar : MonoBehaviour
                 //Debug.Log("Charge done");
                 if (!can_use_death_star)
                 {
-                    UIManager.instance.showUseDeathStar(true);
-                    can_use_death_star = true;
+                    if (GameManager.instance.current_enemy_count == 0) { 
+                        UIManager.instance.showUseDeathStar(true);
+                        can_use_death_star = true;
+                    }
                 }
             }
         }
@@ -165,10 +167,10 @@ public class Deathstar : MonoBehaviour
 
     public void UseDeathStar() {
         Debug.Log("Death star out !");
-        UIManager.instance.showUseDeathStar(false);
         can_use_death_star = false;
-        UIManager.instance.showUseDeathStar(true);
-        StartCoroutine(DeathStarAnimation());
+        UIManager.instance.playerDeathstarKillVideo(delegate () {
+            StartCoroutine(DeathStarAnimation());
+        });
     }
 
     private IEnumerator DeathStarAnimation() {

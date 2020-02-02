@@ -14,10 +14,12 @@ public class GameManager : MonoBehaviour {
     public int current_enemy_count;
 
     private bool repair_circle_spawned;
+    public bool play_intro;
     private void Awake() {
         if (instance == null) {
             instance = this;
             DontDestroyOnLoad(instance);
+            play_intro = true;
         }
     }
 

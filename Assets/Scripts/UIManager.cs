@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-     
+using UnityEngine.Video;
+
 public class UIManager : MonoBehaviour {
 
     public Text energy, metal, stone, enemies_left;
@@ -11,6 +12,9 @@ public class UIManager : MonoBehaviour {
     public Transform HUD, use_death_star_msg;
     public StartPanel startPanel;
     public GameOverPanel gameOverPanel;
+
+    public Transform deathStarVideoRawImage;
+    public VideoPlayer videoPlayer, intro_player;
 
     public static UIManager instance;
     private void Awake() {
@@ -45,6 +49,25 @@ public class UIManager : MonoBehaviour {
         charge_fill.fillAmount = 0;
         updateEnemyCount(0);
         HUD.gameObject.SetActive(true);
+    }
+
+    public void playerDeathstarKillVideo(System.Action after_video) {
+        deathStarVideoRawImage.gameObject.SetActive(true);
+        videoPlayer.Play();
+        StartCoroutine(GameManager.instance.doSomethingAfterDelay(23f, delegate () {
+            deathStarVideoRawImage.gameObject.SetActive(false);
+            after_video?.Invoke();
+            showUseDeathStar(false);
+        }));
+    }
+
+    public void playIntroVideo(System.Action after_video) {
+        deathStarVideoRawImage.gameObject.SetActive(true);
+        intro_player.Play();
+        StartCoroutine(GameManager.instance.doSomethingAfterDelay(23f, delegate () {
+            deathStarVideoRawImage.gameObject.SetActive(false);
+            after_video?.Invoke();
+        }));
     }
 
     public void showUseDeathStar(bool state) { 
